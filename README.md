@@ -1,218 +1,443 @@
-# Automation Exercise UI Automation Test Plan
+# 🚀 Playwright Automation Framework - Automation Exercise Website
+
+## 📖 Project Overview
+
+Welcome to the Playwright Automation Framework repository! 🎯
+
+This project demonstrates a modern, scalable, and maintainable UI test automation framework built using **Playwright with TypeScript** to validate the functionality of the **Automation Exercise** e-commerce web application.
+
+The framework follows industry-standard automation practices and design patterns to provide:
+
+* High readability and maintainability
+* Reusable page objects and fixtures
+* Centralized test data management
+* Data-driven testing capabilities
+* Cross-browser test execution
+* Automated test reporting with Allure
+* Continuous Integration using GitHub Actions
+
+The framework is designed to support reliable end-to-end testing of critical e-commerce user journeys, from authentication and product discovery to cart management, checkout, payment, and order confirmation.
+
+---
+
+## 🛠 Tools & Technologies
+
+* **Programming Language:** TypeScript ⚡
+* **Automation Tool:** Playwright 🎭
+* **Test Runner:** Playwright Test 🧪
+* **Design Pattern:** Page Object Model (POM) 📑
+* **Test Data:** Externalized TypeScript test data
+* **Fixtures:** Custom Playwright Fixtures
+* **Browsers:** Chromium & WebKit 🌐
+* **Reporting:** Allure Playwright Report 📊
+* **CI/CD:** GitHub Actions 🚀
+* **Version Control:** Git & GitHub 🐙
+
+---
+
+## 🏗 Framework Architecture
+
+The framework is structured to promote scalability, reusability, and maintainability.
+
+```text
+PlaywrightAutomationExerciseProject
+│
+├── .github/
+│   └── workflows/
+│       └── playwright.yml
+│
+├── tests/
+│   └── AutomationExerciseWebsite/
+│       │
+│       ├── fixtures/
+│       │   └── BaseFixture.ts
+│       │
+│       ├── pages/
+│       │   ├── HomePage.ts
+│       │   ├── LoginPage.ts
+│       │   ├── RegistrationPage.ts
+│       │   ├── ProductsPage.ts
+│       │   ├── ProductDetailsPage.ts
+│       │   ├── CategoryProductsPage.ts
+│       │   ├── BrandProductsPage.ts
+│       │   ├── ContactUsPage.ts
+│       │   ├── CartPage.ts
+│       │   ├── CheckoutPage.ts
+│       │   ├── PaymentPage.ts
+│       │   └── CompletedOrderPage.ts
+│       │
+│       ├── uiTests/
+│       │   ├── authentication.spec.ts
+│       │   ├── communications.spec.ts
+│       │   ├── product-search.spec.ts
+│       │   ├── product-catalog.spec.ts
+│       │   └── Full-order-cycle.spec.ts
+│       │
+│       └── utils/
+│           ├── Setup/
+│           │   └── globalSetup.ts
+│           │
+│           └── TestData/
+│               ├── users.ts
+│               ├── products.ts
+│               ├── messagesWithTitles.ts
+│               └── paymentCard.ts
+│
+├── allure-report/
+├── allure-results/
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── playwright.config.ts
+└── README.md
+```
 
-## Application Overview
+### Key Components
 
-# Automation Exercise Web Application - UI Automation Test Plan
+#### Page Objects
 
-Document ID: AE-UI-TP-001. Version: 1.0. Status: Approved for creation. Application: https://automationexercise.com/.
+Page Object classes encapsulate page locators and user interactions.
 
-## Project Overview
-This repository contains a Playwright and TypeScript UI automation framework for the Automation Exercise e-commerce practice website. This plan documents the current automated UI scope; it is a test plan, not a report of executed results.
+This approach helps to:
 
-## Tools and Technologies
-TypeScript, Playwright Test, Page Object Model, custom Playwright fixtures, externalized TypeScript test data, Chromium and WebKit projects, Allure Playwright reporter, GitHub Actions.
+* Reduce code duplication
+* Improve test readability
+* Centralize locator maintenance
+* Increase framework reusability
 
-## Framework Architecture
-Active specs are in tests/AutomationExerciseWebsite/uiTests/. The shared fixture tests/AutomationExerciseWebsite/fixtures/BaseFixture.ts provides 12 page objects: Home, Login, Registration, Products, Product Details, Category Products, Brand Products, Contact Us, Cart, Checkout, Payment, and Completed Order. Test data is maintained in tests/AutomationExerciseWebsite/utils/TestData/. Global setup is in tests/AutomationExerciseWebsite/utils/Setup/globalSetup.ts. There are five active spec files covering 16 cases, including data-driven search and product-detail cases. The utils directory currently contains setup and test data modules, not a separate general-purpose utility library.
+The framework currently provides page objects for authentication, products, product details, categories, brands, contact forms, cart, checkout, payment, and order confirmation.
 
-## System Under Test and Scope
-Validate customer registration and authentication, account deletion, homepage featured and recommended products, product search, category and brand listings, product details and reviews, newsletter subscription, Contact Us, cart, checkout addresses, payment form submission, and order confirmation. Out of scope: API testing, security testing, performance/load testing, native mobile applications, Firefox, and external payment-provider integration.
+#### Custom Fixtures
 
-## Environment and Configuration
-Base URL: https://automationexercise.com/. Active projects: Chromium and WebKit. Test timeout: 90 seconds. fullyParallel is enabled; CI retries once and uses one worker; traces are recorded on first retry; screenshots and video are enabled. Authentication, communication, search, and catalog suites clear storage state. The order-cycle relies on the authenticated storage state generated by global setup. Test data and expected messages are sourced from users.ts, products.ts, messagesWithTitles.ts, and paymentCard.ts; credentials and payment values are intentionally not reproduced here.
+A custom Playwright fixture centralizes page-object initialization and makes the required page objects directly available to test cases.
 
-## Execution
-Install dependencies with npm ci and browsers with npx playwright install. Run all active projects with npx playwright test; select a browser with --project=chromium or --project=webkit; run a single spec by supplying its path to npx playwright test. npm test runs the configured headed, single-worker script. The GitHub Actions workflow .github/workflows/playwright.yml runs npm ci, installs Playwright browsers with dependencies, runs npx playwright test on pushes and pull requests to main/master, and attempts to upload playwright-report/.
+This allows test files to focus on **business scenarios and validations** instead of repeatedly creating page-object instances.
 
-## Reporting
-The configured reporter is allure-playwright. Local report scripts are npm run generate:reports and npm run open:reports. Verify report artifact generation in CI because the workflow uploads playwright-report/ while the configured reporter is Allure.
+#### Test Data Management
 
-## Entry, Exit, and Suspension Criteria
-Entry: target site is available; configured browser projects and required global-setup browser are installed; global-setup credentials work; signup email is available. Exit: all planned cases have results on Chromium and WebKit; Critical and High cases pass or have approved defect dispositions; execution artifacts are retained. Suspend if global setup fails, the site is unavailable, or remote account/cart state makes outcomes unreliable; resume after restoring prerequisites and recording affected cases.
+Test data is maintained separately from the test implementation.
 
-## Risks and Coverage Limitations
-The valid registration case uses a static email and does not delete the created account, making repeat runs state-dependent. The order-cycle depends on persistent authenticated storage and account/cart state. playwright.config.ts references Utils/Setup while the directory is utils/Setup, which may fail on case-sensitive CI filesystems. Global setup launches branded Chrome; verify the runner provides it. The workflow uploads a Playwright report path while Allure is configured. Invalid Registration tests duplicate-email rejection, not malformed input validation. ProductsPage.verifySearchedProductsHeader does not await its asynchronous assertion. ContactUsTestFile.txt exists but upload is not tested. fullyParallel is enabled while npm test is single-worker; verify state isolation in CI.
+The framework includes dedicated data modules for:
 
-## Pass and Failure Criteria
-A case passes only when all stated expected outcomes match configured data and the application. Any failed assertion, incorrect value, missing message, or unexpected navigation is a failure. Record browser project, case ID, execution result, and defect reference for failures.
+* User information
+* Product information
+* Expected application messages
+* Payment data
 
-## Test Scenarios
+This supports cleaner test cases and easier test-data maintenance.
 
-### 1. Authentication and Account Lifecycle
+#### Global Setup
 
-**Seed:** `N/A - cases use clean storage state; the authenticated global setup is not the suite seed.`
+The framework uses a global setup process to prepare the authenticated state required by the end-to-end order flow.
 
-#### 1.1. AT-01 (High) Valid registration
+---
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/authentication.spec.ts`
+## 🏆 Key Features
 
-**Steps:**
-  1. Open /login with empty browser storage and verify the signup heading.
-    - expect: The signup section displays the configured New User Signup! heading.
-  2. Submit the configured valid name and signup email.
-    - expect: The registration form is displayed.
-  3. Verify registration section headings; complete gender, password, date of birth, preference, personal details, and address fields; create the account.
-    - expect: The account creation confirmation displays Account Created!.
-  4. Continue to the home page.
-    - expect: The logged-in username matches configured test data.
+✔️ Page Object Model (POM) Architecture
 
-#### 1.2. AT-02 (High) Existing-email registration rejection
+✔️ Reusable Custom Playwright Fixtures
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/authentication.spec.ts`
+✔️ Externalized Test Data
 
-**Steps:**
-  1. Open /login with empty browser storage and submit the configured signup name and already-registered email.
-    - expect: The signup form displays Email Address already exist!.
+✔️ Data-Driven Testing
 
-#### 1.3. AT-03 (High) Valid login and account deletion
+✔️ Cross-Browser Execution
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/authentication.spec.ts`
+✔️ Chromium & WebKit Support
 
-**Steps:**
-  1. Open /login, verify the login heading, and sign in using the configured existing user.
-    - expect: The home page title and logged-in username match configured expectations.
-  2. Delete the account.
-    - expect: The account deletion confirmation displays Account Deleted!.
+✔️ Playwright Auto-Waiting
 
-#### 1.4. AT-04 (High) Invalid login
+✔️ Authentication State Management
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/authentication.spec.ts`
+✔️ End-to-End E-commerce Testing
 
-**Steps:**
-  1. Open /login with empty browser storage and submit the configured invalid email and password.
-    - expect: The login form displays Your email or password is incorrect!.
+✔️ Allure Test Reporting
 
-### 2. Communications
+✔️ Screenshots, Videos & Traces for Debugging
 
-**Seed:** `N/A - the spec explicitly clears browser storage.`
+✔️ GitHub Actions CI/CD Integration
 
-#### 2.1. CM-01 (Medium) Contact Us submission
+✔️ Scalable and Maintainable Framework Structure
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/communications.spec.ts`
+---
 
-**Steps:**
-  1. Open the home page, navigate to Contact Us, and verify the page and form headings.
-    - expect: The configured Contact Us and Get In Touch headings are displayed.
-  2. Fill the configured name, email, subject, and message; submit the form.
-    - expect: Success! Your details have been submitted successfully. is displayed.
+## 🧪 Automated Test Coverage
 
-#### 2.2. CM-02 (Medium) Subscription
+The framework currently covers the following major Automation Exercise user journeys.
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/communications.spec.ts`
+### 🔐 Authentication & Account Management
 
-**Steps:**
-  1. Open the home page, verify the Subscription heading, and submit the configured email address.
-    - expect: You have been successfully subscribed! is displayed.
+* Valid User Registration
+* Existing Email Registration Validation
+* Valid Login
+* Invalid Login
+* Account Deletion
+* Logged-in User Validation
 
-### 3. Product Search
+### 📩 Communication
 
-**Seed:** `N/A - the spec explicitly clears browser storage.`
+* Contact Us Form Submission
+* Newsletter Subscription
+* Form Validation and Success Messages
 
-#### 3.1. PS-01 (Medium) Search with results
+### 🔎 Product Search
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/product-search.spec.ts`
+* Search Products with Matching Results
+* Search Products with No Results
+* Search Result Validation
+* Product Name Verification
 
-**Steps:**
-  1. Open /products and search for Jeans.
-    - expect: The Searched Products heading is displayed.
-    - expect: Exactly 3 results are returned.
-    - expect: Each product name contains Jeans.
+### 🛍️ Product Catalog
 
-#### 3.2. PS-02 (Medium) Search without results
+* Featured Products Validation
+* Recommended Products Validation
+* Category Products Validation
+* Brand Products Validation
+* Product Details Verification
+* Product Availability Verification
+* Product Price Verification
+* Product Condition Verification
+* Product Brand Verification
+* Product Review Submission
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/product-search.spec.ts`
+### 🛒 Shopping Cart
 
-**Steps:**
-  1. Open /products and search for NonExistingProduct.
-    - expect: The Searched Products heading is displayed.
-    - expect: Zero product results are returned.
+* Add Products to Cart
+* Add Multiple Quantities
+* Validate Product Names
+* Validate Unit Prices
+* Validate Quantities
+* Validate Line Totals
+* Remove Products from Cart
+* Cart Content Validation
 
-### 4. Product Catalog and Reviews
+### 💳 Checkout & Order Management
 
-**Seed:** `N/A - the spec explicitly clears browser storage.`
+* Checkout Navigation
+* Delivery Address Validation
+* Billing Address Validation
+* Order Summary Validation
+* Payment Form Submission
+* Order Placement
+* Order Confirmation Validation
 
-#### 4.1. PC-01 (Medium) Featured products
+---
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/product-catalog.spec.ts`
+## 🚀 Running Tests
 
-**Steps:**
-  1. Open the home page and inspect Features Items.
-    - expect: The section heading matches configured data.
-    - expect: The section contains 34 products.
-    - expect: At least one product name contains Top.
+### 1. Install Dependencies
 
-#### 4.2. PC-02 (Medium) Recommended products
+Clone the repository and install the required dependencies:
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/product-catalog.spec.ts`
+```bash
+npm install
+```
 
-**Steps:**
-  1. Open the home page and inspect Recommended Items.
-    - expect: The section heading matches configured data.
-    - expect: The section contains 6 products.
-    - expect: At least one product name contains Dress.
+### 2. Install Playwright Browsers
 
-#### 4.3. PC-03 (Medium) Category products
+```bash
+npx playwright install
+```
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/product-catalog.spec.ts`
+### 3. Execute All Tests
 
-**Steps:**
-  1. Open /category_products/2 and inspect the category listing.
-    - expect: The heading is Women - Tops Products.
-    - expect: Product names contain Top.
-    - expect: Exactly 6 products are listed.
+```bash
+npx playwright test
+```
 
-#### 4.4. PC-04 (Medium) Brand products
+### 4. Run Tests in Chromium
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/product-catalog.spec.ts`
+```bash
+npx playwright test --project=chromium
+```
 
-**Steps:**
-  1. Open /brand_products/H&M and inspect the brand listing.
-    - expect: The heading is Brand - H&M Products.
-    - expect: Summer White Top is present.
-    - expect: Exactly 5 products are listed.
+### 5. Run Tests in WebKit
 
-#### 4.5. PC-05 (Medium) Winter Top details
+```bash
+npx playwright test --project=webkit
+```
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/product-catalog.spec.ts`
+### 6. Run a Specific Test File
 
-**Steps:**
-  1. Open the home page and view Winter Top details.
-    - expect: Name is Winter Top; category is Women > Tops; price is Rs. 600; availability is In Stock; condition is New; brand is Mast & Harbour.
+```bash
+npx playwright test tests/AutomationExerciseWebsite/uiTests/authentication.spec.ts
+```
 
-#### 4.6. PC-06 (Medium) Fancy Green Top details
+### 7. Run Tests in Headed Mode
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/product-catalog.spec.ts`
+```bash
+npx playwright test --headed
+```
 
-**Steps:**
-  1. Open the home page and view Fancy Green Top details.
-    - expect: Name is Fancy Green Top; category is Women > Tops; price is Rs. 700; availability is In Stock; condition is New; brand is Polo.
+### 8. Run the Configured Test Script
 
-#### 4.7. PC-07 (Medium) Submit product review
+```bash
+npm test
+```
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/product-catalog.spec.ts`
+The project's configured npm test script executes Playwright in headed mode with a single worker and handles the configured reporting workflow.
 
-**Steps:**
-  1. Open the home page, view Madame Top For Women, and submit the configured reviewer name, email, and review text.
-    - expect: Thank you for your review. is displayed.
+---
 
-### 5. Full Order Cycle
+## 📊 Reporting
 
-**Seed:** `tests/AutomationExerciseWebsite/utils/Setup/globalSetup.ts`
+The framework uses **Allure Playwright Reporter** for test execution reporting.
 
-#### 5.1. EC-01 (Critical) Cart, checkout, payment, and order confirmation
+Allure reports can provide:
 
-**File:** `tests/AutomationExerciseWebsite/uiTests/Full-order-cycle.spec.ts`
+✔️ Test execution summary
 
-**Steps:**
-  1. Use the authenticated storage state from global setup. Add Frozen Tops For Kids twice, Little Girls Mr. Panda Shirt, Premium Polo T-Shirts, and Regular Fit Straight Jeans; continue shopping between additions.
-    - expect: The first add-to-cart action displays the configured success message.
-  2. Open the cart and verify each product name, unit price, quantity, and line total.
-    - expect: Frozen Tops For Kids: Rs. 278 x 2; Little Girls Mr. Panda Shirt: Rs. 1,200 x 1; Premium Polo T-Shirts: Rs. 1,500 x 1; Regular Fit Straight Jeans: Rs. 1,200 x 1.
-    - expect: Each line total equals unit price multiplied by quantity.
-  3. Remove Regular Fit Straight Jeans and proceed to checkout.
-    - expect: Delivery and billing addresses match configured name, company, city, country, and phone values.
-    - expect: Remaining product rows and quantities match expectations.
-    - expect: Grand total is Rs. 3,256.
-  4. Place the order, complete the payment form with configured card data, and confirm payment.
-    - expect: The page displays Order Placed!.
-    - expect: The page displays Congratulations! Your order has been confirmed!.
+✔️ Passed and failed test details
+
+✔️ Error information and stack traces
+
+✔️ Screenshots
+
+✔️ Videos
+
+✔️ Playwright traces
+
+### Generate Allure Report
+
+```bash
+npm run generate:reports
+```
+
+### Open Allure Report
+
+```bash
+npm run open:reports
+```
+
+The framework also includes commands for cleaning previous report artifacts before execution.
+
+---
+
+## 🔄 Continuous Integration
+
+The project is designed to support automated execution through **GitHub Actions**.
+
+The CI workflow can be used to:
+
+✔️ Install project dependencies
+
+✔️ Install Playwright browsers
+
+✔️ Execute automated tests
+
+✔️ Validate changes on push and pull requests
+
+✔️ Preserve test execution artifacts
+
+This enables the automation suite to become part of a continuous testing and CI/CD workflow.
+
+---
+
+## ⚙️ Test Configuration
+
+The Playwright configuration includes:
+
+* **Base URL:** `https://automationexercise.com/`
+* **Test Timeout:** 90 seconds
+* **Browsers:** Chromium and WebKit
+* **Retries:** Enabled on CI
+* **CI Workers:** Single worker
+* **Parallel Execution:** Enabled
+* **Reporter:** Allure Playwright
+* **Trace:** Captured on first retry
+* **Screenshots:** Enabled
+* **Video:** Enabled
+* **Global Setup:** Configured for authenticated test preparation
+
+The framework configuration is maintained in:
+
+```text
+playwright.config.ts
+```
+
+---
+
+## 🎯 End-to-End Order Flow
+
+One of the main scenarios implemented in this framework validates a complete customer order journey.
+
+The automated flow includes:
+
+```text
+Login
+  ↓
+Browse Products
+  ↓
+Add Products to Cart
+  ↓
+Validate Cart
+  ↓
+Remove Product
+  ↓
+Proceed to Checkout
+  ↓
+Validate Delivery & Billing Information
+  ↓
+Enter Payment Details
+  ↓
+Place Order
+  ↓
+Validate Order Confirmation
+```
+
+This scenario validates the interaction between multiple application components and demonstrates end-to-end automation of a complete e-commerce workflow.
+
+---
+
+## 📌 Application Under Test
+
+**Automation Exercise**
+
+The test automation framework targets the Automation Exercise e-commerce practice website.
+
+Application URL:
+
+https://automationexercise.com/
+
+---
+
+## 🎯 Why This Framework?
+
+This project demonstrates practical experience in:
+
+🔹 Building UI automation frameworks from scratch using Playwright and TypeScript
+
+🔹 Applying the Page Object Model design pattern
+
+🔹 Developing reusable custom Playwright fixtures
+
+🔹 Managing test data separately from test implementation
+
+🔹 Creating maintainable and scalable automated test suites
+
+🔹 Implementing cross-browser test execution
+
+🔹 Automating complete end-to-end e-commerce scenarios
+
+🔹 Generating detailed Allure test reports
+
+🔹 Integrating automated testing with CI/CD pipelines
+
+🔹 Applying automation best practices to real-world web application workflows
+
+---
+
+## 📈 Future Enhancements
+
+Potential future improvements include:
+
+* Expanding browser coverage
+* Adding Firefox execution
+* Increasing test scenario coverage
+* Improving CI/CD reporting and artifact management
+* Adding additional data-driven scenarios
+* Enhancing test tagging and selective execution
+* Improving test isolation for parallel execution
+* Expanding negative and edge-case scenarios
+
