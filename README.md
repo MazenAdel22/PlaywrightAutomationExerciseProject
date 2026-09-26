@@ -426,18 +426,3 @@ This project demonstrates practical experience in:
 
 🔹 Applying automation best practices to real-world web application workflows
 
----
-
-## 📈 Future Enhancements
-
-Potential future improvements include:
-
-* Expanding browser coverage
-* Adding Firefox execution
-* Increasing test scenario coverage
-* Improving CI/CD reporting and artifact management
-* Adding additional data-driven scenarios
-* Enhancing test tagging and selective execution
-* Improving test isolation for parallel execution
-* Expanding negative and edge-case scenarios
-
