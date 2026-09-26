@@ -1,0 +1,32 @@
+import { test } from '../fixtures/BaseFixture';
+import { productsData } from '../utils/TestData/products';
+import { messages, pageTitles } from '../utils/TestData/messagesWithTitles';
+import { paymentCard } from '../utils/TestData/paymentCard';
+import { users } from '../utils/TestData/users';
+
+  test('Full-Order-Cycle Validation', async ({ homePage, cartPage, checkoutPage, paymentPage, completedOrderPage }) => {
+    await homePage.openHomePage();
+    await homePage.addProductToCart(productsData.paymentProducts[0].name);
+    await homePage.continueShopping();
+    await homePage.verifyAddedToCartSuccessMessage(messages.cart.successMessage);
+    await homePage.addProductToCart(productsData.paymentProducts[0].name);
+    await homePage.continueShopping();
+    await homePage.addProductToCart(productsData.paymentProducts[1].name);
+    await homePage.continueShopping();
+    await homePage.addProductToCart(productsData.paymentProducts[2].name);
+    await homePage.continueShopping();
+    await homePage.addProductToCart(productsData.paymentProducts[3].name);
+    await homePage.continueShopping();
+    await homePage.navigateToCartPage();
+    await cartPage.verifyAllProductsQuantityAndPriceInCart(productsData.paymentProducts);
+    await cartPage.removeProduct(productsData.excludedProducts.name);
+    await cartPage.proceedToCheckout();
+    await checkoutPage.verifyDeliveryAddress(pageTitles.checkout.deliveryHeadingTitle, users.validLoginUser.username , users.validLoginUser.company , users.validLoginUser.city , users.validLoginUser.country , users.validLoginUser.mobile_number );
+    await checkoutPage.verifyBillingAddress(pageTitles.checkout.billingHeadingTitle, users.validLoginUser.username , users.validLoginUser.company , users.validLoginUser.city , users.validLoginUser.country , users.validLoginUser.mobile_number );
+    await checkoutPage.verifyProductsQuantityAndPriceInCheckout(productsData.excludedProducts.name, productsData.paymentProducts );
+    await checkoutPage.placeOrder();
+    await paymentPage.fillPaymentDetails( paymentCard.name_on_card, paymentCard.card_number, paymentCard.cvc, paymentCard.expiry_month, paymentCard.expiry_year );
+    await paymentPage.clickPayAndConfirmOrder();
+    await completedOrderPage.verifyCompletedOrderTitle(pageTitles.orderPlaced.title);
+    await completedOrderPage.verifyCompletedOrderSuccessMessage(messages.orderPlaced.successMessage);
+  });

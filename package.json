@@ -1,0 +1,26 @@
+{
+  "name": "playwrightautomationexerciseproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean:reports": "rimraf allure-report allure-results && mkdirp allure-report allure-results",
+    "generate:reports": "npx allure generate ./allure-results/ --clean",
+    "open:reports": "npx allure open ./allure-report/",
+    "pretest": "npm run clean:reports",
+    "posttest": "npm run generate:reports && npm run open:reports",
+    "script:to:run": "npx playwright test --headed --workers=1",
+    "test": "npm run script:to:run || npm run posttest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.6.2",
+    "allure-playwright": "^3.12.2",
+    "mkdirp": "^3.0.1",
+    "rimraf": "^6.1.3"
+  }
+}
